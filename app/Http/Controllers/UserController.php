@@ -8,6 +8,14 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {   
+    public function showCorrectHomepage() {
+        if(auth()->check()) {
+            return view('homepage-feed');
+        } else {
+            return view('homepage');
+        }
+    }
+    
     public function login(Request $request) {
         $incomingFields = $request->validate([
             'loginusername' => 'required',
@@ -15,6 +23,8 @@ class UserController extends Controller
         ]);
 
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
+            //function to set cookie for laravel_session
+            $request->session()->regenerate();
             return 'Congrats!!';
         } else {
             return 'Sorry!!!';
