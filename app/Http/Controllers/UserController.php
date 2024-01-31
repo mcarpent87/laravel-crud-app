@@ -25,10 +25,15 @@ class UserController extends Controller
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
             //function to set cookie for laravel_session
             $request->session()->regenerate();
-            return 'Congrats!!';
+            return redirect('/')->with('success', 'You have successfully logged in.');
         } else {
-            return 'Sorry!!!';
+            return redirect('/')->with('failure', 'Invalid login');
         }
+    }
+
+    public function logout(){
+        auth()->logout();
+        return redirect('/')->with('success', 'You are now logged out.');
     }
 
     public function register(Request $request) {
@@ -37,7 +42,8 @@ class UserController extends Controller
             'email' => ['required', 'email', Rule::unique('users', 'email')],
             'password' => ['required', 'min:8', 'confirmed']
         ]);
-        User::create($incomingFields);
-        return 'Hello from register function';
+        $user = User::create($incomingFields);
+        auth()->login($user);
+        return redirect('/')->with('success', 'Account successfully created.');
     }
 }
