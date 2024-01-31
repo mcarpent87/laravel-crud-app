@@ -55,11 +55,19 @@
       </div>
       @endif
 
+      @if(session()->has('failure'))
+      <div class="container container--narrow">
+        <div class="alert alert-danger text-center">
+            {{session('failure')}}
+        </div>
+      </div>
+      @endif
+
     {{$slot}}
 
     <!-- footer begins -->
     <footer class="border-top text-center small text-muted py-3">
-      <p class="m-0">Copyright &copy; 2022 <a href="/" class="text-muted">OurApp</a>. All rights reserved.</p>
+      <p class="m-0">Copyright &copy; {{Date('Y')}} <a href="/" class="text-muted">OurApp</a>. All rights reserved.</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

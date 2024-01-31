@@ -27,7 +27,7 @@ class UserController extends Controller
             $request->session()->regenerate();
             return redirect('/')->with('success', 'You have successfully logged in.');
         } else {
-            return 'Sorry!!!';
+            return redirect('/')->with('failure', 'Invalid login');
         }
     }
 
@@ -42,7 +42,8 @@ class UserController extends Controller
             'email' => ['required', 'email', Rule::unique('users', 'email')],
             'password' => ['required', 'min:8', 'confirmed']
         ]);
-        User::create($incomingFields);
-        return 'Hello from register function';
+        $user = User::create($incomingFields);
+        auth()->login($user);
+        return redirect('/')->with('success', 'Account successfully created.');
     }
 }
