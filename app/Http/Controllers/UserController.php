@@ -25,10 +25,15 @@ class UserController extends Controller
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
             //function to set cookie for laravel_session
             $request->session()->regenerate();
-            return 'Congrats!!';
+            return redirect('/')->with('success', 'You have successfully logged in.');
         } else {
             return 'Sorry!!!';
         }
+    }
+
+    public function logout(){
+        auth()->logout();
+        return redirect('/')->with('success', 'You are now logged out.');
     }
 
     public function register(Request $request) {
