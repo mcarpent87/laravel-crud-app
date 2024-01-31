@@ -15,6 +15,8 @@ class UserController extends Controller
         ]);
 
         if (auth()->attempt(['username' => $incomingFields['loginusername'], 'password' => $incomingFields['loginpassword']])) {
+            //set cookie for laravel_session
+            $request->session()->regenerate();
             return 'Congrats!!';
         } else {
             return 'Sorry!!!';
