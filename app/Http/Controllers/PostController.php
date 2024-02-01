@@ -7,10 +7,20 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
-{
+{   
+    public function delete(Post $post) {
+        if(auth()->user()->cannot('delete', $post)) {
+            return 'You cannot do that';
+        }
+        $post->delete();
+
+        return redirect('/profile/' . auth()->user()->username)->with('success', 'Post successfully deleted.');
+    }
+
     public function showCreateForm() {
         return view('create-post');
     }
+
     //type hinting, laravel looks up the post based on the id value
     public function viewSinglePost(Post $post) {
         $post['body'] = strip_tags(Str::markdown($post->body), '<p><ul><em><strong><ol><li><h3>');
