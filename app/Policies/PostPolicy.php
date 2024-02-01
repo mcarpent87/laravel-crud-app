@@ -36,8 +36,10 @@ class PostPolicy
      * Determine whether the user can update the model.
      */
     public function update(User $user, Post $post): bool
-    {
-        //
+    {   //if user is an admin, they can edit and delete posts of other users.
+        if($user->isAdmin === 1) {
+            return true;
+        }
         return $user->id === $post->user_id;
     }
 
@@ -46,7 +48,9 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        //
+        if($user->isAdmin === 1) {
+            return true;
+        }
         return $user->id === $post->user_id;
     }
 
