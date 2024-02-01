@@ -1,6 +1,7 @@
 <x-layout>
     <div class="container py-md-5 container--narrow">
         <form action="/post/{{$post->id}}" method="POST">
+          <button class="btn btn-primary"><a class="text-white" href="/post/{{$post->id}}">&laquo; Go Back</a></button>
           @csrf
           @method('PUT')
           <div class="form-group">
