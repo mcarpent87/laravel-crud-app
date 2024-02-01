@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
-{   
+{   //use type hinting to lookup User model
+    public function profile(User $user) {
+        //pizza is the instance of the user model
+        return view('profile-posts', ['username' => $user->username, 'posts' => $user->posts()->latest()->get(), 'postCount'=> $user->posts()->count()]);
+    }
+
     public function showCorrectHomepage() {
         if(auth()->check()) {
             return view('homepage-feed');
