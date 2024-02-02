@@ -25,8 +25,16 @@ class UserController extends Controller
             ->encode('jpg');
         Storage::put('public/avatars/' . $filename, $imgData);
 
+        $oldAvatar = $user->avatar;
+
         $user->avatar = $filename; 
         $user->save();
+
+        if ($oldAvatar != '/fallback-avatar.jpg') {
+            Storage::delete(str_replace("/storage", "public/", $oldAvatar));
+        }
+
+        return back()->with('success', 'Avatar Updated.');
     }
 
     public function showAvatarForm()
