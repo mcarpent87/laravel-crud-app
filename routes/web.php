@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 use PHPUnit\Framework\Attributes\PostCondition;
 
 /*
@@ -26,8 +27,12 @@ Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
 Route::post('/register', [UserController::class, 'register'])->middleware('guest');
 Route::post('/login', [UserController::class, 'login'])->middleware('guest');
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
-Route::get('/manage-avatar', [UserController::class, 'showAvatarForm']);
-Route::post('/manage-avatar', [UserController::class, 'storeAvatar']);
+Route::get('/manage-avatar', [UserController::class, 'showAvatarForm'])->middleware('mustBeLoggedIn');
+Route::post('/manage-avatar', [UserController::class, 'storeAvatar'])->middleware('mustBeLoggedIn');
+
+//follower related routes
+Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow']);
+Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow']);
 
 //blog post related routes
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
