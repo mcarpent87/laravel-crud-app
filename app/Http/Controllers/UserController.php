@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Intervention\Image\Facades\Image;
@@ -45,8 +46,14 @@ class UserController extends Controller
     //use type hinting to lookup User model
     public function profile(User $user)
     {
-        //pizza is the instance of the user model
+        $currentlyFollowing = 0; 
+
+        if (auth()->check()) {
+            $currentlyFollowing = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
+        }
+
         return view('profile-posts', [
+            'currentlyFollowing' => $currentlyFollowing,
             'username' => $user->username,
             'avatar' => $user->avatar,
             'posts' => $user

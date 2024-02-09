@@ -8,29 +8,29 @@ use Illuminate\Http\Request;
 
 class FollowController extends Controller
 {
-    public function createFollow(User $user) {
-        // you can't follow yourself
-        if($user->id == auth()->user()->id) {
-            return back()->with('failure', 'You cannot follow yourself.');
-        }
-        //you can't follow someone youre already following
-        $existCheck = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
+    // public function createFollow(User $user) {
+    //     // you cannot follow yourself
+    //     if ($user->id == auth()->user()->id) {
+    //         return back()->with('failure', 'You cannot follow yourself.');
+    //     }
 
-        if ($existCheck) {
-            return back()->with('failure', 'You are already following that user.');
-        }
+    //     // you cannot follow someone you're already following
+    //     $existCheck = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
 
-        //newFollow is instance of Follow model
-        $newFollow = new Follow;
-        $newFollow->user_id = auth()->user()->id;
-        $newFollow->followeduser = $user->id;
-        $newFollow->save();
+    //     if ($existCheck) {
+    //         return back()->with('failure', 'You are already following that user.');
+    //     }
 
-        return back()->with('success', 'User successfully followed.');
-        
-    }
+    //     $newFollow = new Follow;
+    //     $newFollow->user_id = auth()->user()->id;
+    //     $newFollow->followeduser = $user->id;
+    //     $newFollow->save();
 
-    public function removeFollow() {
+    //     return back()->with('success', 'User successfully followed.');
+    // }
 
-    }
+    // public function removeFollow(User $user) {
+    //     Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->delete();
+    //     return back()->with('success', 'User succesfully unfollowed.');
+    // }
 }
